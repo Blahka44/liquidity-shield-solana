@@ -28,6 +28,12 @@ The guarded vault started with 100 test tokens. After the rejected and approved 
 
 Solana Explorer displays these custom Anchor accounts as raw program data. The repository includes `scripts/read_attestations.ts`, which decodes the DecisionRecord PDAs into human-readable fields.
 
+### Independent hash verification
+
+The repository includes `scripts/verify_attestation.ts`, a read-only verifier that fetches a DecisionRecord from devnet and recomputes:
+
+```text
+SHA-256(raw_input_json UTF-8 bytes || policy_hash || action_tag)
 ## Deployed Devnet Program
 
 - **Program ID:** [`7mgbZq9YseuJpMhnRAthiz6t8i2iLVFgwG9gjkvhHRoH`](https://explorer.solana.com/address/7mgbZq9YseuJpMhnRAthiz6t8i2iLVFgwG9gjkvhHRoH?cluster=devnet)
