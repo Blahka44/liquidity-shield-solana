@@ -1,13 +1,44 @@
-# Liquidity Shield — Solana
+# Liquidity Shield Solana
 
 Liquidity Shield is a pre-execution policy guard and on-chain attestation layer for AI agents and automated systems managing token vaults on Solana.
 
 It enforces policy before a protected SPL Token transfer occurs, then leaves a permanent on-chain record of whether the action was executed or rejected.
 
+## Public devnet attestation proof
+
+Liquidity Shield has been exercised on Solana devnet with a real Policy PDA, Vault PDA, SPL token mint, and two immutable DecisionRecord attestations.
+
+| Proof | On-chain link |
+| --- | --- |
+| Policy PDA | [13MXV8HGqqWun5Mb7k84ew6c2mCPGFkGBDPSVeeJ5ujk](https://explorer.solana.com/address/13MXV8HGqqWun5Mb7k84ew6c2mCPGFkGBDPSVeeJ5ujk?cluster=devnet) |
+| Vault PDA | [BWq1GUxauBupxCfEYJ3Gua6Qp3HSXLP9pxmAXJaVzT8h](https://explorer.solana.com/address/BWq1GUxauBupxCfEYJ3Gua6Qp3HSXLP9pxmAXJaVzT8h?cluster=devnet) |
+| Rejected DecisionRecord | [8F66ZKYGQh5EtsDcmdkQHZhh2KQDjB6bpP9w2Tt9bR6U](https://explorer.solana.com/address/8F66ZKYGQh5EtsDcmdkQHZhh2KQDjB6bpP9w2Tt9bR6U?cluster=devnet) |
+| Executed DecisionRecord | [BokRVpcwwc6dXxK3TwPDQNBZmwKJ6KKeYbf4hAw4JnuL](https://explorer.solana.com/address/BokRVpcwwc6dXxK3TwPDQNBZmwKJ6KKeYbf4hAw4JnuL?cluster=devnet) |
+
+### Demonstrated outcomes
+
+| Proposal | Risk score | Outcome | Token movement |
+| --- | ---: | --- | --- |
+| Proposed `MOVE` | 51 | `REJECTED` | 0 tokens moved |
+| Proposed `MOVE` | 25 | `EXECUTED` | 10 tokens moved |
+
+The policy threshold was `50`. Both proposals wrote a DecisionRecord containing the policy, agent identity, action, risk score, raw-input hash, policy hash, decision hash, outcome, and timestamp.
+
+The guarded vault started with 100 test tokens. After the rejected and approved proposals, the source vault held 90 tokens and the destination account held 10 tokens.
+
+Solana Explorer displays these custom Anchor accounts as raw program data. The repository includes `scripts/read_attestations.ts`, which decodes the DecisionRecord PDAs into human-readable fields.
+
+### Independent hash verification
+
+The repository includes `scripts/verify_attestation.ts`, a read-only verifier that fetches a DecisionRecord from devnet and recomputes:
+
+```text
+SHA-256(raw_input_json UTF-8 bytes || policy_hash || action_tag)
 ## Deployed Devnet Program
 
 - **Program ID:** [`7mgbZq9YseuJpMhnRAthiz6t8i2iLVFgwG9gjkvhHRoH`](https://explorer.solana.com/address/7mgbZq9YseuJpMhnRAthiz6t8i2iLVFgwG9gjkvhHRoH?cluster=devnet)
 - **Deployment Tx:** [`5JTmeD9eqfqn9AmUhrG6ZzB932BjcPxjvBbkpvEDwM2oCbRaDS7N2ybBG1u4FVeqcYkRfZmrDD54hsFkyMPnpB43`](https://explorer.solana.com/tx/5JTmeD9eqfqn9AmUhrG6ZzB932BjcPxjvBbkpvEDwM2oCbRaDS7N2ybBG1u4FVeqcYkRfZmrDD54hsFkyMPnpB43?cluster=devnet)
+
 
 ## Why it exists
 
