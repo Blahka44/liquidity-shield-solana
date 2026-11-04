@@ -1,4 +1,4 @@
-# Liquidity Shield — Solana
+# Liquidity Shield Solana
 
 Liquidity Shield is a pre-execution policy guard and on-chain attestation layer for AI agents and automated systems managing token vaults on Solana.
 
