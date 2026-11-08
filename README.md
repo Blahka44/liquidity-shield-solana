@@ -1,12 +1,12 @@
-```bash
-c
-# Liquidity Shield — Solana
+
+
+## Liquidity Shield — Solana
 
 Liquidity Shield is a pre-execution policy guard and on-chain attestation layer for AI agents managing token vaults on Solana.
 
 ## Architecture Diagram
 
-```text
+```
 [ AI Agent ] ----(proposes action & risk score)----> [ Liquidity Shield Program ]
                                                                |
                                                     [ Policy PDA Check ]
@@ -46,5 +46,4 @@ anchor test --skip-build
 * `tests/` — Integration tests for policy enforcement.
 * `scripts/` — Devnet deployment and cryptographic verifier scripts.
 
-```
 
